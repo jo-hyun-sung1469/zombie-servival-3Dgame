@@ -1,7 +1,7 @@
 # This .gitignore file should be placed at the root of your Unity project directory
-#
 # Get latest from https://github.com/github/gitignore/blob/main/Unity.gitignore
-#
+# Also include Visual Studio ignores from https://github.com/github/gitignore/blob/main/VisualStudio.gitignore
+
 .utmp/
 /[Ll]ibrary/
 /[Tt]emp/
@@ -11,6 +11,14 @@
 /[Ll]ogs/
 /[Uu]ser[Ss]ettings/
 *.log
+
+# Visual Studio / user-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.env
 
 # By default unity supports Blender asset imports, *.blend1 blender files do not need to be commited to version control.
 *.blend1
@@ -66,13 +74,98 @@ sysinfo.txt
 # Mono auto generated files
 mono_crash.*
 
-# Builds
+# Builds and build results (Unity + Visual Studio)
 *.apk
 *.aab
 *.unitypackage
 *.unitypackage.meta
 *.app
 
+# Visual Studio build and intermediate directories
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Ww][Ii][Nn]32/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+[Aa][Rr][Mm]64[Ee][Cc]/
+bld/
+[Oo]bj/
+[Oo]ut/
+[Ll]og/
+[Ll]ogs/
+
+# Build results on 'Bin' directories
+**/[Bb]in/*
+
+# Files built by Visual Studio and other tools
+*_i.c
+*_p.c
+*_h.h
+*.ilk
+*.meta
+*.obj
+*.idb
+*.iobj
+*.pch
+*.pdb
+*.ipdb
+*.pgc
+*.pgd
+*.rsp
+*.log
+*.tlog
+*.vspscc
+*.vssscc
+.builds
+*.pidb
+*.svclog
+*.scc
+
+# Node / package artifacts
+node_modules/
+
+# NuGet / packages
+**/[Pp]ackages/*
+!**/[Pp]ackages/build/
+*.nupkg
+*.snupkg
+
+# Visual Studio profiler / trace / cache
+*.psess
+*.vsp
+*.vspx
+*.sap
+*.e2e
+ipch/
+*.sdf
+*.VC.db
+
+# Test result files
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
+*.trx
+*.VisualState.xml
+TestResult.xml
+nunit-*.xml
+*.received.*
+
+# Misc IDE/tooling
+_ReSharper*/
+*.DotSettings.user
+_TeamCity*
+*.coverage
+*.coveragexml
+
+# Package/tooling dirs
+.csx/
+aws-sam/
+.aws-sam
+
+# Unity-specific build & generated assets
 # Crashlytics generated file
 crashlytics-build.properties
 
@@ -97,3 +190,19 @@ InitTestScene*.unity*
 
 # Auto-generated scenes by play mode tests
 /[Aa]ssets/[Ii]nit[Tt]est[Ss]cene*.unity*
+
+# Mono auto generated files
+mono_crash.*
+
+# Keep other common exclusions from VisualStudio template
+*.tmp
+*.userprefs
+*.vsix
+*.binlog
+MSBuild_Logs/
+
+# Machine-specific/temp
+~$*
+*~
+*.tmp
+
