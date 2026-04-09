@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: cec9319962b4dc042bdaca7ace1a1ae6
+timeCreated: 1513885828
+licenseType: Store
+TextScriptImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 102247
+  packageName: colt python HD
+  packageVersion: 1.0
+  assetPath: Assets/Colt Python/Read_me.txt
+  uploadId: 220099
