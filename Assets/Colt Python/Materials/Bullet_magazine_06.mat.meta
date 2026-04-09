@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 7af84e8efe086924d85d6cff81eaea21
+timeCreated: 1513884366
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 102247
+  packageName: colt python HD
+  packageVersion: 1.0
+  assetPath: Assets/Colt Python/Materials/Bullet_magazine_06.mat
+  uploadId: 220099

@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 8261b71119e7ed84ba992f48b04cf0b1
+timeCreated: 1513883926
+licenseType: Store
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 102247
+  packageName: colt python HD
+  packageVersion: 1.0
+  assetPath: Assets/Colt Python/scene/pythonDEMO.unity
+  uploadId: 220099
