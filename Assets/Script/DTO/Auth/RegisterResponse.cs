@@ -1,11 +1,21 @@
 using System;
+using Newtonsoft.Json;
 
 [Serializable]
 public sealed class RegisterResponse
 {
-    public string userId;
-    public string userName;
-    public string email;
-    public string role;
-    public DateTime createdAtUtc;
+    [JsonProperty("userId")]
+    public string UserId;
+
+    [JsonProperty("userName")]
+    public string UserName;
+
+    [JsonProperty("email")]
+    public string Email;
+
+    [JsonProperty("role")]
+    public string Role;
+
+    [JsonProperty("createdAtUtc")]
+    public DateTime CreatedAtUtc;
 }
