@@ -1,16 +1,8 @@
-using UnityEngine;
+using System;
 
-public class EmailCodeResponse : MonoBehaviour
+[Serializable]
+public sealed class EmailCodeResponse
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public string EmailVerificationId;
+    public DateTime ExpiresAtUtc;
 }
