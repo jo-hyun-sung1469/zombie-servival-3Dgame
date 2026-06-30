@@ -1,16 +1,11 @@
-using UnityEngine;
+using System;
 
-public class LoginResponse : MonoBehaviour
+[Serializable]
+public sealed class LoginResponse
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public string AccessToken;  
+    public string TokenType;
+    public DateTime ExpiresAtUtc;
+    public string UserName;
+    public string Role;
 }
