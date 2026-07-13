@@ -5,8 +5,8 @@ using Newtonsoft.Json;
 public sealed class EmailCodeResponse
 {
     [JsonProperty("emailVerificationId")]
-    public string EmailVerificationId;
+    public string EmailVerificationId { get; set; } = string.Empty;
 
     [JsonProperty("expiresAtUtc")]
-    public DateTime ExpiresAtUtc;
+    public DateTime ExpiresAtUtc { get; set; }
 }
