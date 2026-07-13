@@ -6,6 +6,12 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Camera loginCamera;
     [SerializeField] private GameObject ingameUI;
     [SerializeField] private GameObject loginUI;
+    private LoginResponse loginResponse;//LoginResponse에 있는 AssessToken을 저장&사용하기 위한 변수
+    public LoginResponse LoginResponse
+    {
+        get { return loginResponse; }
+        set { loginResponse = value; }
+    }
 
     private GameManager _instance;
 
