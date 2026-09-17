@@ -17,13 +17,13 @@ public class RegisterAndEmailVerifyCodeManager : MonoBehaviour
     [Header("private 필드")]
     private string email = string.Empty;
     private string password = string.Empty;
-    private string nickName = string.Empty;
+    private string nickname = string.Empty;
     private string insertCode = string.Empty;
 
     [Header("Text 필드")]
     [SerializeField] private TMP_InputField emailText;
     [SerializeField] private TMP_InputField passwordText;
-    [SerializeField] private TMP_InputField nicNameText;
+    [SerializeField] private TMP_InputField nicknameText;
     [SerializeField] private TMP_InputField codeText;
     [SerializeField] private TextMeshProUGUI sendOrNot;//코드가 보내졌는지 확인하는 text
 
@@ -69,10 +69,10 @@ public class RegisterAndEmailVerifyCodeManager : MonoBehaviour
     {
         email = emailText.text;
         password = passwordText.text;
-        nickName = nicNameText.text;
-        if (!string.IsNullOrWhiteSpace(email) && !string.IsNullOrWhiteSpace(password) && !string.IsNullOrWhiteSpace(nickName))
+        nickname = nicknameText.text;
+        if (!string.IsNullOrWhiteSpace(email) && !string.IsNullOrWhiteSpace(password) && !string.IsNullOrWhiteSpace(nickname))
         {
-            StartCoroutine(RegisterUser(email, password, nickName, verifyEmailCodeResponse.EmailVerificationId));
+            StartCoroutine(RegisterUser(email, password, nickname, verifyEmailCodeResponse.EmailVerificationId));
         }
         else
         {
