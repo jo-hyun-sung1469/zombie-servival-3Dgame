@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: d6bd89978b4e37d4689cd69f358c376e
+guid: 55df1e503769bbb44b32d0f947dcf8d8
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -9,7 +9,7 @@ TrueTypeFontImporter:
   characterPadding: 1
   includeFontData: 1
   fontNames:
-  - CookieRun
+  - Pretendard
   fallbackFontReferences: []
   customCharacters: 
   fontRenderingMode: 0
