@@ -10,6 +10,7 @@ public class RegisterAndEmailVerifyCodeManager : MonoBehaviour
 {
     [Header("URL 모음")]//나중에 URL주소를 바꿔야함
     private string baseURL = "https://localhost:7037/api/auth";
+    private string nicknameCheck = "register/username-availability";
     private string sendEmailVerificationCodeURL = "/register/email-code";
     private string verifyEmailCodeURL = "/register/email-code/verify";
     private string registerURL = "/register";
@@ -21,15 +22,41 @@ public class RegisterAndEmailVerifyCodeManager : MonoBehaviour
     private string insertCode = string.Empty;
 
     [Header("Text 필드")]
-    [SerializeField] private TMP_InputField emailText;
-    [SerializeField] private TMP_InputField passwordText;
     [SerializeField] private TMP_InputField nicknameText;
+    [SerializeField] private TextMeshProUGUI nicknameAvailabilityText;//닉네임 중복확인 결과를 보여주는 text 
+    [SerializeField] private TMP_InputField passwordText;
+    [SerializeField] private TMP_InputField emailText;
     [SerializeField] private TMP_InputField codeText;
     [SerializeField] private TextMeshProUGUI sendOrNot;//코드가 보내졌는지 확인하는 text
 
     [Header("Response 필드")]
     [SerializeField] private EmailCodeResponse emailCodeResponse;
     [SerializeField] private VerifyEmailCodeResponse verifyEmailCodeResponse;
+
+    public void CheckNicknameAvailability()
+    {
+        nickname = nicknameText.text;
+        if (!string.IsNullOrWhiteSpace(nickname))
+        {
+            StartCoroutine(CheckNicknameAvailabilityCoroutine(nickname, (response) =>
+            {
+                if (response.IsAvailable)
+                {
+                    Debug.Log("사용 가능한 닉네임입니다.");
+                }
+                else
+                {
+                    Debug.Log("이미 사용 중인 닉네임입니다.");
+                }
+            }));
+        }
+        else
+        {
+            Debug.Log("닉네임란이 비어있습니다");
+            nicknameText.text = "닉네임을 입력해주세요";
+        }
+    }
+
     public void OnRequestEmailVerificationCode()
     {
         email = emailText.text;
@@ -78,6 +105,39 @@ public class RegisterAndEmailVerifyCodeManager : MonoBehaviour
         {
             Debug.Log("모든 필드를 입력해주세요.");
         }
+    }
+
+    private IEnumerator CheckNicknameAvailabilityCoroutine(string userName, Action<UserNameAvailabilityResponse> response)
+    {
+        string url = baseURL + nicknameCheck;
+        var RequestBody = new UserNameAvailabilityRequest
+        {
+            UserName = userName
+        };
+
+        string json = JsonConvert.SerializeObject(RequestBody);
+        using(UnityWebRequest request = new UnityWebRequest(url, "GET"))
+        {
+            byte[] bodyRaw = Encoding.UTF8.GetBytes(json);
+
+            request.uploadHandler = new UploadHandlerRaw(bodyRaw);
+            request.downloadHandler = new DownloadHandlerBuffer();
+            request.SetRequestHeader("Content-Type", "application/json");
+
+            yield return request.SendWebRequest();
+
+            if(request.result == UnityWebRequest.Result.Success)
+            {
+                response?.Invoke(JsonConvert.DeserializeObject<UserNameAvailabilityResponse>(request.downloadHandler.text));
+            }
+            else
+            {
+                nicknameAvailabilityText.text = "서버 오류(다시 요청해 주세요) " + request.error;
+                Debug.Log("서버 오류: " + request.responseCode + " / " + request.error);
+                Debug.Log("응답 내용: " + request.downloadHandler.text);
+            }
+        }
+
     }
 
     private IEnumerator SendVerificationCode(string userEmail, Action<EmailCodeResponse> response)
