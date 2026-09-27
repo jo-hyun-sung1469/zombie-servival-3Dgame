@@ -4,6 +4,7 @@ using UnityEngine.UI;
 public class LegalCheckScript : MonoBehaviour
 {
     private GameObject activeLegalNotice;
+    [SerializeField]private GameObject Register;
 
     public void ShowLegalNotice(GameObject legalNotice)
     {
@@ -17,6 +18,8 @@ public class LegalCheckScript : MonoBehaviour
         activeLegalNotice = legalNotice;
         activeLegalNotice.transform.SetAsLastSibling();
         activeLegalNotice.SetActive(true);
+
+        Register.SetActive(false);
 
         if (activeLegalNotice.TryGetComponent(out ScrollRect scrollRect))
         {
@@ -34,5 +37,6 @@ public class LegalCheckScript : MonoBehaviour
 
         activeLegalNotice.SetActive(false);
         activeLegalNotice = null;
+        Register.SetActive(true);
     }
 }
