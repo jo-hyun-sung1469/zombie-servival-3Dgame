@@ -23,8 +23,9 @@ public class RegisterAndEmailVerifyCodeManager : MonoBehaviour
 
     [Header("Text 필드")]
     [SerializeField] private TMP_InputField nicknameText;
-    [SerializeField] private TextMeshProUGUI nicknameAvailabilityText;//닉네임 중복확인 결과를 보여주는 text 
+    [SerializeField] private TextMeshProUGUI nicknameAvailabilityText;//닉네임 중복확인 결과를 보여주는 text
     [SerializeField] private TMP_InputField passwordText;
+    [SerializeField] private TextMeshProUGUI passwordValidationText;
     [SerializeField] private TMP_InputField emailText;
     [SerializeField] private TMP_InputField codeText;
     [SerializeField] private TextMeshProUGUI sendOrNot;//코드가 보내졌는지 확인하는 text
@@ -36,25 +37,23 @@ public class RegisterAndEmailVerifyCodeManager : MonoBehaviour
     public void CheckNicknameAvailability()
     {
         nickname = nicknameText.text;
-        if (!string.IsNullOrWhiteSpace(nickname))
+        if (!AuthInputRules.TryValidateUserName(nickname, out string error))
         {
-            StartCoroutine(CheckNicknameAvailabilityCoroutine(nickname, (response) =>
-            {
-                if (response.IsAvailable)
-                {
-                    Debug.Log("사용 가능한 닉네임입니다.");
-                }
-                else
-                {
-                    Debug.Log("이미 사용 중인 닉네임입니다.");
-                }
-            }));
+            ShowFeedback(nicknameAvailabilityText, error);
+            return;
         }
-        else
+
+        if (nicknameAvailabilityText != null)
         {
-            Debug.Log("닉네임란이 비어있습니다");
-            nicknameText.text = "닉네임을 입력해주세요";
+            nicknameAvailabilityText.text = string.Empty;
         }
+
+        StartCoroutine(CheckNicknameAvailabilityCoroutine(nickname, (response) =>
+        {
+            ShowFeedback(nicknameAvailabilityText, response.IsAvailable
+                ? "사용 가능한 닉네임입니다."
+                : "이미 사용 중인 닉네임입니다.");
+        }));
     }
 
     public void OnRequestEmailVerificationCode()
@@ -97,7 +96,24 @@ public class RegisterAndEmailVerifyCodeManager : MonoBehaviour
         email = emailText.text;
         password = passwordText.text;
         nickname = nicknameText.text;
-        if (!string.IsNullOrWhiteSpace(email) && !string.IsNullOrWhiteSpace(password) && !string.IsNullOrWhiteSpace(nickname))
+        if (!AuthInputRules.TryValidateUserName(nickname, out string nicknameError))
+        {
+            ShowFeedback(nicknameAvailabilityText, nicknameError);
+            return;
+        }
+
+        if (!AuthInputRules.TryValidatePassword(password, out string passwordError))
+        {
+            ShowFeedback(passwordValidationText, passwordError);
+            return;
+        }
+
+        if (passwordValidationText != null)
+        {
+            passwordValidationText.text = string.Empty;
+        }
+
+        if (!string.IsNullOrWhiteSpace(email))
         {
             StartCoroutine(RegisterUser(email, password, nickname, verifyEmailCodeResponse.EmailVerificationId));
         }
@@ -105,6 +121,16 @@ public class RegisterAndEmailVerifyCodeManager : MonoBehaviour
         {
             Debug.Log("모든 필드를 입력해주세요.");
         }
+    }
+
+    private static void ShowFeedback(TMP_Text feedbackText, string message)
+    {
+        if (feedbackText != null)
+        {
+            feedbackText.text = message;
+        }
+
+        Debug.Log(message);
     }
 
     private IEnumerator CheckNicknameAvailabilityCoroutine(string userName, Action<UserNameAvailabilityResponse> response)
