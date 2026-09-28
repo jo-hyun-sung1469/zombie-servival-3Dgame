@@ -5,6 +5,7 @@ using System.Text;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.SceneManagement;
 
 public class LoginManager : MonoBehaviour
 {
@@ -57,6 +58,7 @@ public class LoginManager : MonoBehaviour
                 response?.Invoke(JsonConvert.DeserializeObject<LoginResponse>(request.downloadHandler.text));//받은 Json값을 EmailCodeResponse변환
 
                 Debug.Log("응답 내용: " + request.downloadHandler.text);
+                SceneManager.LoadScene("MainScene");
             }
             else
             {
