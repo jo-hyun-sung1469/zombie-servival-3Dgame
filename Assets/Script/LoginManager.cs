@@ -57,14 +57,13 @@ public class LoginManager : MonoBehaviour
             {
                 response?.Invoke(JsonConvert.DeserializeObject<LoginResponse>(request.downloadHandler.text));//받은 Json값을 EmailCodeResponse변환
 
-                Debug.Log("응답 내용: " + request.downloadHandler.text);
+                Debug.Log("로그인 성공!");
                 SceneManager.LoadScene("MainScene");
             }
             else
             {
                 errorText.text = "로그인 실패!";
                 Debug.Log("서버 오류: " + request.responseCode + " / " + request.error);
-                Debug.Log("응답 내용: " + request.downloadHandler.text);
             }
         }
     }
