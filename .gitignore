@@ -107,6 +107,9 @@ bld/
 *_h.h
 *.ilk
 *.meta
+!Assets/Settings/CrimsonDuskSkybox.mat.meta
+!Assets/Settings/CrimsonDuskVisuals.asset.meta
+!Assets/Settings/NaturalDuskSkybox.shader.meta
 *.obj
 *.idb
 *.iobj
