@@ -10,7 +10,7 @@ public class RegisterAndEmailVerifyCodeManager : MonoBehaviour
 {
     [Header("URL 모음")]//나중에 URL주소를 바꿔야함
     private string baseURL = "https://localhost:7037/api/auth";
-    private string nicknameCheck = "register/username-availability";
+    private string nicknameCheck = "/register/username-availability";
     private string sendEmailVerificationCodeURL = "/register/email-code";
     private string verifyEmailCodeURL = "/register/email-code/verify";
     private string registerURL = "/register";
@@ -115,6 +115,13 @@ public class RegisterAndEmailVerifyCodeManager : MonoBehaviour
 
         if (!string.IsNullOrWhiteSpace(email))
         {
+            if (verifyEmailCodeResponse == null ||
+                string.IsNullOrWhiteSpace(verifyEmailCodeResponse.EmailVerificationId))
+            {
+                ShowFeedback(sendOrNot, "이메일 인증을 먼저 완료해주세요.");
+                return;
+            }
+
             StartCoroutine(RegisterUser(email, password, nickname, verifyEmailCodeResponse.EmailVerificationId));
         }
         else
