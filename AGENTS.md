@@ -6,6 +6,8 @@ Unity 기반 프로젝트. 아래 규칙을 항상 따른다.
 - C#(.cs) 작성/수정 시 `.agents/skills/unity-conventions` 규칙을 따른다.
 - 코드 리뷰 요청("리뷰해줘", "PR 검토") 시 `.agents/skills/unity-code-review`로 읽기 전용 리뷰를 수행한다.
 - 커밋/PR 요청 시에만 `.agents/skills/commit-and-pr`을 사용한다 (부작용이 있으므로 명시적 요청 없이는 실행하지 않음).
+- Unity 에디터를 터미널/배치 모드로 빌드·테스트 실행할 때는 `.agents/skills/unity-cli`를 따른다.
+- 실행 중인 Unity 에디터에 MCP로 연결해 씬/오브젝트를 직접 조작할 때는 `.agents/skills/unity-live-mcp`를 따른다.
 
 ## 절대 직접 수정하지 않는 것
 `Library/`, `Temp/`, `Logs/`, `obj/`, `UserSettings/`, `.meta`, `ProjectSettings/`, `Packages/packages-lock.json`
