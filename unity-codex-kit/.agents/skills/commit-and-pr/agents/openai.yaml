@@ -1,0 +1,7 @@
+interface:
+  display_name: "Commit & PR"
+  short_description: "Unity 프로젝트 커밋 정리와 PR 생성"
+
+policy:
+  # 커밋/푸시는 부작용이 있으므로 $commit-and-pr 로 명시 호출했을 때만 실행
+  allow_implicit_invocation: false
