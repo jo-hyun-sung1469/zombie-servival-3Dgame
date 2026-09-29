@@ -1,0 +1,31 @@
+{
+  "description": "Unity 프로젝트용 Codex 훅 (보호 규칙 + C# 성능 점검)",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash|apply_patch|ApplyPatch|Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell -NoProfile -ExecutionPolicy Bypass -File .codex/hooks/guard-unity.ps1",
+            "timeout": 15,
+            "statusMessage": "Unity 보호 규칙 검사 중"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Bash|apply_patch|ApplyPatch|Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell -NoProfile -ExecutionPolicy Bypass -File .codex/hooks/check-unity-cs.ps1",
+            "timeout": 30,
+            "statusMessage": "C# 성능 패턴 점검 중"
+          }
+        ]
+      }
+    ]
+  }
+}
