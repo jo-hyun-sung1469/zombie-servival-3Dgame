@@ -110,6 +110,8 @@ bld/
 !Assets/Settings/CrimsonDuskSkybox.mat.meta
 !Assets/Settings/CrimsonDuskVisuals.asset.meta
 !Assets/Settings/NaturalDuskSkybox.shader.meta
+!Assets/Art.meta
+!Assets/Art/**/*.meta
 *.obj
 *.idb
 *.iobj
