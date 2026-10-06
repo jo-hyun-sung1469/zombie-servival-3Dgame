@@ -9,7 +9,7 @@ using UnityEngine.SceneManagement;
 
 public class LoginManager : MonoBehaviour
 {
-    private string loginURL= "https://localhost:7037/api/auth/login";
+    private string loginURL= "https://zombie-survival-3d-game.duckdns.org/api/auth/login";
     [SerializeField] private TMP_InputField nicknameInputField;
     [SerializeField] private TMP_InputField passwordInputField;
     [SerializeField] private TextMeshProUGUI errorText;

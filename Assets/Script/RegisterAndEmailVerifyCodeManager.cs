@@ -9,7 +9,7 @@ using UnityEngine.Networking;
 public class RegisterAndEmailVerifyCodeManager : MonoBehaviour
 {
     [Header("URL 모음")]//나중에 URL주소를 바꿔야함
-    private string baseURL = "https://localhost:7037/api/auth";
+    private string baseURL = "https://zombie-survival-3d-game.duckdns.org/api/auth";
     private string nicknameCheck = "/register/username-availability";
     private string sendEmailVerificationCodeURL = "/register/email-code";
     private string verifyEmailCodeURL = "/register/email-code/verify";
