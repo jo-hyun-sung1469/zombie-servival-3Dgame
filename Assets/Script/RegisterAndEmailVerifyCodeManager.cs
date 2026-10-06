@@ -142,20 +142,11 @@ public class RegisterAndEmailVerifyCodeManager : MonoBehaviour
 
     private IEnumerator CheckNicknameAvailabilityCoroutine(string userName, Action<UserNameAvailabilityResponse> response)
     {
-        string url = baseURL + nicknameCheck;
-        var RequestBody = new UserNameAvailabilityRequest
-        {
-            UserName = userName
-        };
+        string url = $"{baseURL}{nicknameCheck}?username={userName}";
 
-        string json = JsonConvert.SerializeObject(RequestBody);
-        using(UnityWebRequest request = new UnityWebRequest(url, "GET"))
+        using (UnityWebRequest request = new UnityWebRequest(url, "GET"))
         {
-            byte[] bodyRaw = Encoding.UTF8.GetBytes(json);
-
-            request.uploadHandler = new UploadHandlerRaw(bodyRaw);
-            request.downloadHandler = new DownloadHandlerBuffer();
-            request.SetRequestHeader("Content-Type", "application/json");
+            request.downloadHandler = new DownloadHandlerBuffer();  
 
             yield return request.SendWebRequest();
 
