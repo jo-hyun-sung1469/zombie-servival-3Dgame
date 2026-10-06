@@ -29,6 +29,7 @@ public class RegisterAndEmailVerifyCodeManager : MonoBehaviour
     [SerializeField] private TMP_InputField emailText;
     [SerializeField] private TMP_InputField codeText;
     [SerializeField] private TextMeshProUGUI sendOrNot;//코드가 보내졌는지 확인하는 text
+    [SerializeField] private TextMeshProUGUI verifyCodeText;
 
     [Header("Response 필드")]
     [SerializeField] private EmailCodeResponse emailCodeResponse;
@@ -224,7 +225,7 @@ public class RegisterAndEmailVerifyCodeManager : MonoBehaviour
 
             if (request.result == UnityWebRequest.Result.Success)
             {
-                sendOrNot.text = "코드 전송 성공!";
+                verifyCodeText.text = "인증 성공!";
                 response?.Invoke(JsonConvert.DeserializeObject<VerifyEmailCodeResponse>(request.downloadHandler.text));//보낼 값을 Json으로 변환
 
 
@@ -232,7 +233,17 @@ public class RegisterAndEmailVerifyCodeManager : MonoBehaviour
             }
             else
             {
-                sendOrNot.text = "코드 전송 실패!";
+                if (emailCodeResponse != null &&
+                    emailCodeResponse.ExpiresAtUtc != default(DateTime) &&
+                    DateTime.UtcNow >= emailCodeResponse.ExpiresAtUtc.ToUniversalTime())
+                {
+                    verifyCodeText.text = "인증 시간이 초과되었습니다. 인증 코드를 다시 요청해주세요.";
+                }
+                else
+                {
+                    verifyCodeText.text = "인증 실패!";
+                }
+
                 Debug.Log("서버 오류: " + request.responseCode + " / " + request.error);
                 Debug.Log("응답 내용: " + request.downloadHandler.text);
             }
