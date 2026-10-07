@@ -6,6 +6,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Networking;
 
+[RequireComponent(typeof(LegalCheckScript))]
 public class RegisterAndEmailVerifyCodeManager : MonoBehaviour
 {
     [Header("URL 모음")]//나중에 URL주소를 바꿔야함
@@ -20,6 +21,7 @@ public class RegisterAndEmailVerifyCodeManager : MonoBehaviour
     private string password = string.Empty;
     private string nickname = string.Empty;
     private string insertCode = string.Empty;
+    private LegalCheckScript legalCheck;
 
     [Header("Text 필드")]
     [SerializeField] private TMP_InputField nicknameText;
@@ -34,6 +36,11 @@ public class RegisterAndEmailVerifyCodeManager : MonoBehaviour
     [Header("Response 필드")]
     [SerializeField] private EmailCodeResponse emailCodeResponse;
     [SerializeField] private VerifyEmailCodeResponse verifyEmailCodeResponse;
+
+    private void Awake()
+    {
+        legalCheck = GetComponent<LegalCheckScript>();
+    }
 
     public void CheckNicknameAvailability()
     {
@@ -59,6 +66,12 @@ public class RegisterAndEmailVerifyCodeManager : MonoBehaviour
 
     public void OnRequestEmailVerificationCode()
     {
+        if (legalCheck == null || !legalCheck.HasAcceptedAllTerms)
+        {
+            ShowFeedback(sendOrNot, "모든 약관에 동의해주세요.");
+            return;
+        }
+
         email = emailText.text;
         email.Trim();
         if(!string.IsNullOrWhiteSpace(email))
