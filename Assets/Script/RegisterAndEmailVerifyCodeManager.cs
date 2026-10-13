@@ -103,7 +103,7 @@ public class RegisterAndEmailVerifyCodeManager : MonoBehaviour
         }
         else
         {
-            codeText.text = "인증 코드가 비어있습니다";
+            verifyCodeText.text = "인증 코드가 비어있습니다";
             Debug.Log("인증코드가 비어있습니다");
         }
     }
