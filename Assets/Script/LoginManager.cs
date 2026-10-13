@@ -61,8 +61,11 @@ public class LoginManager : MonoBehaviour
                 SceneManager.LoadScene("MainScene");
             }
             else
-            {
-                errorText.text = "로그인 실패!";
+            {   if(request.responseCode == 401)
+                    errorText.text = "닉네임 및 비밀번호가 틀렸습니다";
+                else
+                    errorText.text = "서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.";
+
                 Debug.Log("서버 오류: " + request.responseCode + " / " + request.error);
             }
         }
