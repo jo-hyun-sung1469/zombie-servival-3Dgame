@@ -23,6 +23,10 @@ public class RegisterAndEmailVerifyCodeManager : MonoBehaviour
     private string insertCode = string.Empty;
     private LegalCheckScript legalCheck;
 
+    [Header("Response 필드")]
+    [SerializeField] private EmailCodeResponse emailCodeResponse;
+    [SerializeField] private VerifyEmailCodeResponse verifyEmailCodeResponse;
+
     [Header("Text 필드")]
     [SerializeField] private TMP_InputField nicknameText;
     [SerializeField] private TextMeshProUGUI nicknameAvailabilityText;//닉네임 중복확인 결과를 보여주는 text
@@ -33,9 +37,8 @@ public class RegisterAndEmailVerifyCodeManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI sendOrNot;//코드가 보내졌는지 확인하는 text
     [SerializeField] private TextMeshProUGUI verifyCodeText;
 
-    [Header("Response 필드")]
-    [SerializeField] private EmailCodeResponse emailCodeResponse;
-    [SerializeField] private VerifyEmailCodeResponse verifyEmailCodeResponse;
+
+    [SerializeField] private GameObject LoginGuide;
 
     private void Awake()
     {
@@ -287,6 +290,7 @@ public class RegisterAndEmailVerifyCodeManager : MonoBehaviour
             {
                 Debug.Log("회원가입 성공!");
                 Debug.Log("응답 내용: " + request.downloadHandler.text);
+                LoginGuide.SetActive(true);
             }
             else
             {
