@@ -20,4 +20,11 @@ public class AuthSceneUI : MonoBehaviour
         registerPanel.SetActive(true);
         basePanel.SetActive(false);
     }
+
+    public void OnShowStartUI()
+    {
+        loginPanel.SetActive(false);
+        registerPanel.SetActive(false);
+        basePanel.SetActive(true);
+    }
 }
