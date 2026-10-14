@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class AuthSceneUI : MonoBehaviour
+public class AuthSceneController : MonoBehaviour
 {
     [SerializeField] private GameObject loginPanel;
     [SerializeField] private GameObject registerPanel;
