@@ -5,6 +5,7 @@ using UnityEngine.Serialization;
 [RequireComponent(typeof(LegalCheckScript))]
 [RequireComponent(typeof(RegisterAndEmailVerifyCodeManager))]
 [RequireComponent(typeof(LoginManager))]
+[DefaultExecutionOrder(100)]
 public class AuthInputUIHandler : MonoBehaviour
 {
     [Header("private 필드")]
@@ -17,6 +18,7 @@ public class AuthInputUIHandler : MonoBehaviour
     private RegisterAndEmailVerifyCodeManager _registerManager;
     private LoginManager _loginManager;
     [SerializeField] private GameManager _gameManager;
+    private bool _isPasswordInputFocused;
 
     private void Awake()
     {
@@ -26,13 +28,48 @@ public class AuthInputUIHandler : MonoBehaviour
     }
 
 
-    private void OnPasswordStart()
+    private void LateUpdate()
     {
+        TMP_InputField registerPasswordInputField = _registerManager.PasswordText;
+        TMP_InputField loginPasswordInputField = _loginManager.PasswordInputField;
+        bool isPasswordInputFocused =
+            (registerPasswordInputField != null && registerPasswordInputField.isFocused) ||
+            (loginPasswordInputField != null && loginPasswordInputField.isFocused);
+
+        if (isPasswordInputFocused)
+        {
+            if (!_isPasswordInputFocused)
+            {
+                OnPasswordStart();
+            }
+            else if (Input.imeCompositionMode != IMECompositionMode.Off)
+            {
+                Input.imeCompositionMode = IMECompositionMode.Off;
+            }
+        }
+        else if (_isPasswordInputFocused)
+        {
+            OnPasswordEnd();
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (_isPasswordInputFocused)
+        {
+            OnPasswordEnd();
+        }
+    }
+
+    public void OnPasswordStart()
+    {
+        _isPasswordInputFocused = true;
         Input.imeCompositionMode = IMECompositionMode.Off;
     }
 
-    private void OnPasswordEnd()
+    public void OnPasswordEnd()
     {
+        _isPasswordInputFocused = false;
         Input.imeCompositionMode = IMECompositionMode.On;
     }
 

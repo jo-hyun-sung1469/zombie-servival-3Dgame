@@ -225,10 +225,34 @@ MonoBehaviour:
       m_Calls: []
   m_OnSelect:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1604351887}
+        m_TargetAssemblyTypeName: AuthInputUIHandler, Assembly-CSharp
+        m_MethodName: OnPasswordStart
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_OnDeselect:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1604351887}
+        m_TargetAssemblyTypeName: AuthInputUIHandler, Assembly-CSharp
+        m_MethodName: OnPasswordEnd
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_OnTextSelection:
     m_PersistentCalls:
       m_Calls: []
@@ -845,8 +869,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1604351882}
-        m_TargetAssemblyTypeName: RegisterAndEmailVerifyCodeManager, Assembly-CSharp
+      - m_Target: {fileID: 1604351887}
+        m_TargetAssemblyTypeName: AuthInputUIHandler, Assembly-CSharp
         m_MethodName: OnCheckVerificationCode
         m_Mode: 1
         m_Arguments:
@@ -10519,9 +10543,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1604351882}
-        m_TargetAssemblyTypeName: RegisterAndEmailVerifyCodeManager, Assembly-CSharp
-        m_MethodName: CheckNicknameAvailability
+      - m_Target: {fileID: 1604351887}
+        m_TargetAssemblyTypeName: InputUI, Assembly-CSharp
+        m_MethodName: OnCheckNicknameAvailability
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -11503,7 +11527,6 @@ MonoBehaviour:
   _nicknameInputField: {fileID: 1369114646}
   _passwordInputField: {fileID: 1156290301}
   _errorText: {fileID: 1464241940}
-  _gameManager: {fileID: 1321592486}
 --- !u!4 &1604351884
 Transform:
   m_ObjectHideFlags: 0
@@ -11559,6 +11582,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d5b2ec2ef731884e88585999fc27c3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _gameManager: {fileID: 1321592486}
 --- !u!1 &1652022827
 GameObject:
   m_ObjectHideFlags: 0
@@ -11750,8 +11774,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1604351882}
-        m_TargetAssemblyTypeName: RegisterAndEmailVerifyCodeManager, Assembly-CSharp
+      - m_Target: {fileID: 1604351887}
+        m_TargetAssemblyTypeName: AuthInputUIHandler, Assembly-CSharp
         m_MethodName: OnRegister
         m_Mode: 1
         m_Arguments:
@@ -13691,8 +13715,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1604351882}
-        m_TargetAssemblyTypeName: RegisterAndEmailVerifyCodeManager, Assembly-CSharp
+      - m_Target: {fileID: 1604351887}
+        m_TargetAssemblyTypeName: InputUI, Assembly-CSharp
         m_MethodName: OnRequestEmailVerificationCode
         m_Mode: 1
         m_Arguments:
@@ -14444,9 +14468,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1604351883}
-        m_TargetAssemblyTypeName: LoginManager, Assembly-CSharp
-        m_MethodName: onLogin
+      - m_Target: {fileID: 1604351887}
+        m_TargetAssemblyTypeName: AuthInputUIHandler, Assembly-CSharp
+        m_MethodName: OnLogin
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
