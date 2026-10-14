@@ -115,7 +115,7 @@ public class AuthInputUIHandler : MonoBehaviour
         else
         {
             Debug.Log("이메일란이 비어있습니다");
-            _registerManager.EmailText.text = "이메일을 입력해주세요";
+            _registerManager.SendOrNot.text = "이메일을 입력해주세요";
         }
     }
 
