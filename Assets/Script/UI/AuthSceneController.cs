@@ -1,30 +1,34 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UIElements;
 
 public class AuthSceneController : MonoBehaviour
 {
-    [SerializeField] private GameObject loginPanel;
-    [SerializeField] private GameObject registerPanel;
-    [SerializeField] private GameObject basePanel;
+    [FormerlySerializedAs("loginPanel")]
+    [SerializeField] private GameObject _loginPanel;
+    [FormerlySerializedAs("registerPanel")]
+    [SerializeField] private GameObject _registerPanel;
+    [FormerlySerializedAs("basePanel")]
+    [SerializeField] private GameObject _basePanel;
 
     public void OnShowLoginUI()
     {
-        loginPanel.SetActive(true);
-        registerPanel.SetActive(false);
-        basePanel.SetActive(false);
+        _loginPanel.SetActive(true);
+        _registerPanel.SetActive(false);
+        _basePanel.SetActive(false);
     }
 
     public void OnShowRegisterUI()
     {
-        loginPanel.SetActive(false);
-        registerPanel.SetActive(true);
-        basePanel.SetActive(false);
+        _loginPanel.SetActive(false);
+        _registerPanel.SetActive(true);
+        _basePanel.SetActive(false);
     }
 
     public void OnShowStartUI()
     {
-        loginPanel.SetActive(false);
-        registerPanel.SetActive(false);
-        basePanel.SetActive(true);
+        _loginPanel.SetActive(false);
+        _registerPanel.SetActive(false);
+        _basePanel.SetActive(true);
     }
 }

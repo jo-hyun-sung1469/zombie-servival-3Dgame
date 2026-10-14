@@ -3226,8 +3226,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86f0850c26b6ec445b545c5363932e5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  legalCheck: {fileID: 1604351885}
-  legalNotice: {fileID: 1652022827}
+  _legalCheck: {fileID: 1604351885}
+  _legalNotice: {fileID: 1652022827}
 --- !u!1 &442107409
 GameObject:
   m_ObjectHideFlags: 0
@@ -4772,8 +4772,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86f0850c26b6ec445b545c5363932e5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  legalCheck: {fileID: 1604351885}
-  legalNotice: {fileID: 2121850740}
+  _legalCheck: {fileID: 1604351885}
+  _legalNotice: {fileID: 2121850740}
 --- !u!1 &791284783
 GameObject:
   m_ObjectHideFlags: 0
@@ -7861,8 +7861,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86f0850c26b6ec445b545c5363932e5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  legalCheck: {fileID: 1604351885}
-  legalNotice: {fileID: 1723381543}
+  _legalCheck: {fileID: 1604351885}
+  _legalNotice: {fileID: 1723381543}
 --- !u!1 &1156290299
 GameObject:
   m_ObjectHideFlags: 0
@@ -10984,8 +10984,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86f0850c26b6ec445b545c5363932e5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  legalCheck: {fileID: 1604351885}
-  legalNotice: {fileID: 1780425115}
+  _legalCheck: {fileID: 1604351885}
+  _legalNotice: {fileID: 1780425115}
 --- !u!1 &1557875377
 GameObject:
   m_ObjectHideFlags: 0
@@ -11459,6 +11459,7 @@ GameObject:
   - component: {fileID: 1604351882}
   - component: {fileID: 1604351885}
   - component: {fileID: 1604351886}
+  - component: {fileID: 1604351887}
   m_Layer: 0
   m_Name: RegisterAndLoginManager
   m_TagString: Untagged
@@ -11478,15 +11479,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91ff1169b3e0d4d4d8dc6048a2b044a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nicknameText: {fileID: 1822518810}
-  nicknameAvailabilityText: {fileID: 807699768}
-  passwordText: {fileID: 1451481}
-  passwordValidationText: {fileID: 807699772}
-  emailText: {fileID: 1375571094}
-  codeText: {fileID: 1557875379}
-  sendOrNot: {fileID: 62952952}
-  verifyCodeText: {fileID: 791284784}
-  LoginGuide: {fileID: 129277222}
+  _nicknameInputField: {fileID: 1822518810}
+  _nicknameAvailabilityText: {fileID: 807699768}
+  _passwordInputField: {fileID: 1451481}
+  _passwordValidationText: {fileID: 807699772}
+  _emailInputField: {fileID: 1375571094}
+  _verificationCodeInputField: {fileID: 1557875379}
+  _emailCodeStatusText: {fileID: 62952952}
+  _verificationCodeStatusText: {fileID: 791284784}
+  _loginGuidePanel: {fileID: 129277222}
 --- !u!114 &1604351883
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11499,10 +11500,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61528f859fa755d4f8e50645305e20e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nicknameInputField: {fileID: 1369114646}
-  passwordInputField: {fileID: 1156290301}
-  errorText: {fileID: 1464241940}
-  gameManager: {fileID: 1321592486}
+  _nicknameInputField: {fileID: 1369114646}
+  _passwordInputField: {fileID: 1156290301}
+  _errorText: {fileID: 1464241940}
+  _gameManager: {fileID: 1321592486}
 --- !u!4 &1604351884
 Transform:
   m_ObjectHideFlags: 0
@@ -11530,7 +11531,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b95e93f48d8aeab4a9c83cc23c473c02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Register: {fileID: 521392634}
+  _registerPanel: {fileID: 521392634}
 --- !u!114 &1604351886
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11543,9 +11544,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f164350916b249f4aabfd723b4856cb7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  loginPanel: {fileID: 1680204110}
-  registerPanel: {fileID: 1717097109}
-  basePanel: {fileID: 177927365}
+  _loginPanel: {fileID: 1680204110}
+  _registerPanel: {fileID: 1717097109}
+  _basePanel: {fileID: 177927365}
+--- !u!114 &1604351887
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1604351881}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d5b2ec2ef731884e88585999fc27c3a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1652022827
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,18 +1,24 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class SteminaAndHp : MonoBehaviour
 {
-    public Slider stemina_bar;
-    [SerializeField] private float maxHp = 100;
-    [SerializeField] private float hp = 100;
-    [SerializeField] private float maxStemina = 100;
-    [SerializeField] private float stemina = 100;
+    [FormerlySerializedAs("stemina_bar")]
+    public Slider StaminaSlider;
+    [FormerlySerializedAs("maxHp")]
+    [SerializeField] private float _maxHP = 100;
+    [FormerlySerializedAs("hp")]
+    [SerializeField] private float _currentHP = 100;
+    [FormerlySerializedAs("maxStemina")]
+    [SerializeField] private float _maxStamina = 100;
+    [FormerlySerializedAs("stemina")]
+    [SerializeField] private float _currentStamina = 100;
     public bool IsSprinting { get; set; } = false;
     void Start()
     {
-        stemina_bar.minValue = 0f;
-        stemina_bar.maxValue = 1f;
+        StaminaSlider.minValue = 0f;
+        StaminaSlider.maxValue = 1f;
     }
     void Update()
     {
@@ -20,16 +26,16 @@ public class SteminaAndHp : MonoBehaviour
     }
     private void RegenStemina()
     {
-        if (IsSprinting && stemina > 0)
+        if (IsSprinting && _currentStamina > 0)
         {
-            stemina -= 5 * Time.deltaTime;
+            _currentStamina -= 5 * Time.deltaTime;
         }
-        else if (!IsSprinting && stemina < maxStemina) // ← 조건 수정
+        else if (!IsSprinting && _currentStamina < _maxStamina) // ← 조건 수정
         {
-            stemina += 3 * Time.deltaTime;
+            _currentStamina += 3 * Time.deltaTime;
         }
 
-        stemina = Mathf.Clamp(stemina, 0, maxStemina); // 0~100 범위 제한
-        stemina_bar.value = stemina / maxStemina;
+        _currentStamina = Mathf.Clamp(_currentStamina, 0, _maxStamina); // 0~100 범위 제한
+        StaminaSlider.value = _currentStamina / _maxStamina;
     }
 }

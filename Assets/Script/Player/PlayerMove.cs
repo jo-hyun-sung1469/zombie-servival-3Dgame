@@ -1,16 +1,22 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class PlayerMove : MonoBehaviour
 {
-    [SerializeField] private float moveSpeed = 20f;
-    [SerializeField] private float jumpForce = 15f;
-    [SerializeField] private float maxSpeed = 30f;
-    [SerializeField] private float spritSpeed = 2f;//스프린트시 배울로 적용
+    [FormerlySerializedAs("moveSpeed")]
+    [SerializeField] private float _moveSpeed = 20f;
+    [FormerlySerializedAs("jumpForce")]
+    [SerializeField] private float _jumpForce = 15f;
+    [FormerlySerializedAs("maxSpeed")]
+    [SerializeField] private float _maxSpeed = 30f;
+    [FormerlySerializedAs("spritSpeed")]
+    [SerializeField] private float _sprintSpeed = 2f;//스프린트시 배울로 적용
 
     private Rigidbody _rigidbody;
     [SerializeField] private SteminaAndHp _steminaAndHp;
-    [SerializeField] private Transform cameraTransform; // 카메라 연결
-    Vector3 dir;
+    [FormerlySerializedAs("cameraTransform")]
+    [SerializeField] private Transform _cameraTransform; // 카메라 연결
+    Vector3 _moveDirection;
     private bool isJumped { get; set; } = false;
     private void Awake()
     {
@@ -21,34 +27,34 @@ public class PlayerMove : MonoBehaviour
 
     private void FixedUpdate()  
     {
-        dir = Vector3.zero;
+        _moveDirection = Vector3.zero;
 
-        Vector3 forward = cameraTransform.forward;
-        Vector3 right = cameraTransform.right;
+        Vector3 forward = _cameraTransform.forward;
+        Vector3 right = _cameraTransform.right;
         forward.y = 0f; // ← 이게 하늘로 올라가는 문제 해결
         right.y = 0f;
         forward.Normalize();
         right.Normalize();
 
-        if (Input.GetKey(KeyCode.W)) dir += forward;
-        if (Input.GetKey(KeyCode.S)) dir += -forward;
-        if (Input.GetKey(KeyCode.D)) dir += right;
-        if (Input.GetKey(KeyCode.A)) dir += -right;
+        if (Input.GetKey(KeyCode.W)) _moveDirection += forward;
+        if (Input.GetKey(KeyCode.S)) _moveDirection += -forward;
+        if (Input.GetKey(KeyCode.D)) _moveDirection += right;
+        if (Input.GetKey(KeyCode.A)) _moveDirection += -right;
 
         if (Input.GetKey(KeyCode.LeftShift))
         {
-            _rigidbody.AddForce(dir * moveSpeed * spritSpeed, ForceMode.Force);
+            _rigidbody.AddForce(_moveDirection * _moveSpeed * _sprintSpeed, ForceMode.Force);
             _steminaAndHp.IsSprinting = true;
         }
         else
         {
-            _rigidbody.AddForce(dir * moveSpeed, ForceMode.Force);
+            _rigidbody.AddForce(_moveDirection * _moveSpeed, ForceMode.Force);
             _steminaAndHp.IsSprinting = false;
         }
 
-        if (dir != Vector3.zero)
+        if (_moveDirection != Vector3.zero)
         {
-            _rigidbody.AddForce(dir * moveSpeed, ForceMode.Acceleration);
+            _rigidbody.AddForce(_moveDirection * _moveSpeed, ForceMode.Acceleration);
         }
         else
         {
@@ -57,9 +63,9 @@ public class PlayerMove : MonoBehaviour
 
         Vector3 flat = new Vector3(_rigidbody.linearVelocity.x, 0, _rigidbody.linearVelocity.z);
 
-        if (flat.magnitude > maxSpeed)
+        if (flat.magnitude > _maxSpeed)
         {
-            Vector3 limited = flat.normalized * maxSpeed;
+            Vector3 limited = flat.normalized * _maxSpeed;
             _rigidbody.linearVelocity = new Vector3(limited.x, _rigidbody.linearVelocity.y, limited.z);
         }
 
@@ -74,7 +80,7 @@ public class PlayerMove : MonoBehaviour
 
     private void IsJumping()
     {
-        _rigidbody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+        _rigidbody.AddForce(Vector3.up * _jumpForce, ForceMode.Impulse);
         isJumped = true;
     }
 

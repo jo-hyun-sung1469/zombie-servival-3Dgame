@@ -4,68 +4,83 @@ using System.Collections;
 using System.Text;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.Networking;
 
 
+[RequireComponent(typeof(LegalCheckScript))]
 public class RegisterAndEmailVerifyCodeManager : MonoBehaviour
 {
     [Header("URL 모음")]//나중에 URL주소를 바꿔야함
-    private string baseURL = "https://zombie-survival-3d-game.duckdns.org/api/auth";
-    private string nicknameCheck = "/register/username-availability";
-    private string sendEmailVerificationCodeURL = "/register/email-code";
-    private string verifyEmailCodeURL = "/register/email-code/verify";
-    private string registerURL = "/register";
+    private string _baseUrl = "https://zombie-survival-3d-game.duckdns.org/api/auth";
+    private string _nicknameAvailabilityPath = "/register/username-availability";
+    private string _sendEmailVerificationCodePath = "/register/email-code";
+    private string _verifyEmailCodePath = "/register/email-code/verify";
+    private string _registerPath = "/register";
+    private LegalCheckScript _legalCheck;
 
     [Header("Response 필드")]
-    [SerializeField] private EmailCodeResponse emailCodeResponse;
-    [SerializeField] private VerifyEmailCodeResponse verifyEmailCodeResponse;
+    [FormerlySerializedAs("emailCodeResponse")]
+    [SerializeField] private EmailCodeResponse _emailCodeResponse;
+    [FormerlySerializedAs("verifyEmailCodeResponse")]
+    [SerializeField] private VerifyEmailCodeResponse _verifyEmailCodeResponse;
 
     [Header("Text 필드")]
-    [SerializeField] private TMP_InputField nicknameText;
-    [SerializeField] private TextMeshProUGUI nicknameAvailabilityText;//닉네임 중복확인 결과를 보여주는 text
-    [SerializeField] private TMP_InputField passwordText;
-    [SerializeField] private TextMeshProUGUI passwordValidationText;
-    [SerializeField] private TMP_InputField emailText;
-    [SerializeField] private TMP_InputField codeText;
-    [SerializeField] private TextMeshProUGUI sendOrNot;//코드가 보내졌는지 확인하는 text
-    [SerializeField] private TextMeshProUGUI verifyCodeText;
+    [FormerlySerializedAs("nicknameText")]
+    [SerializeField] private TMP_InputField _nicknameInputField;
+    [FormerlySerializedAs("nicknameAvailabilityText")]
+    [SerializeField] private TextMeshProUGUI _nicknameAvailabilityText;//닉네임 중복확인 결과를 보여주는 text
+    [FormerlySerializedAs("passwordText")]
+    [SerializeField] private TMP_InputField _passwordInputField;
+    [FormerlySerializedAs("passwordValidationText")]
+    [SerializeField] private TextMeshProUGUI _passwordValidationText;
+    [FormerlySerializedAs("emailText")]
+    [SerializeField] private TMP_InputField _emailInputField;
+    [FormerlySerializedAs("codeText")]
+    [SerializeField] private TMP_InputField _verificationCodeInputField;
+    [FormerlySerializedAs("sendOrNot")]
+    [SerializeField] private TextMeshProUGUI _emailCodeStatusText;//코드가 보내졌는지 확인하는 text
+    [FormerlySerializedAs("verifyCodeText")]
+    [SerializeField] private TextMeshProUGUI _verificationCodeStatusText;
 
     [Header("GetterSetter 필드")]
-    public TMP_InputField NicknameText { get { return nicknameText; } }
-    public TextMeshProUGUI NicknameAvailabilityText { get { return nicknameAvailabilityText; } }
-    public TMP_InputField PasswordText { get { return passwordText; } }
-    public TextMeshProUGUI PasswordValidationText { get { return passwordValidationText; } }
-    public TMP_InputField EmailText { get { return emailText; } }
-    public TMP_InputField CodeText { get { return codeText; } }
-    public TextMeshProUGUI SendOrNot { get { return sendOrNot; } }
-    public TextMeshProUGUI VerifyCodeText { get { return verifyCodeText; } }
-    public EmailCodeResponse EmailCodeResponse { get { return emailCodeResponse; } }
-    public VerifyEmailCodeResponse VerifyEmailCodeResponse { get { return verifyEmailCodeResponse; } }
+    public TMP_InputField NicknameText { get { return _nicknameInputField; } }
+    public TextMeshProUGUI NicknameAvailabilityText { get { return _nicknameAvailabilityText; } }
+    public TMP_InputField PasswordText { get { return _passwordInputField; } }
+    public TextMeshProUGUI PasswordValidationText { get { return _passwordValidationText; } }
+    public TMP_InputField EmailText { get { return _emailInputField; } }
+    public TMP_InputField CodeText { get { return _verificationCodeInputField; } }
+    public TextMeshProUGUI SendOrNot { get { return _emailCodeStatusText; } }
+    public TextMeshProUGUI VerifyCodeText { get { return _verificationCodeStatusText; } }
+    public EmailCodeResponse EmailCodeResponse { get; set; }
+    public VerifyEmailCodeResponse VerifyEmailCodeResponse { get; set; }
 
 
     //delegate 필ㄷ
     public delegate IEnumerator CheckNicknameAvailability(string userName, Action<UserNameAvailabilityResponse> response);
-    public CheckNicknameAvailability checkNicknameAvailability;
+    public CheckNicknameAvailability OnCheckNicknameAvailability;
     public delegate IEnumerator SendVerificationCode(string userEmail, Action<EmailCodeResponse> response);
-    public SendVerificationCode sendVerificationCode;
+    public SendVerificationCode OnSendVerificationCode;
     public delegate IEnumerator VerifyCode(string code, string emailVerificationId, Action<VerifyEmailCodeResponse> response);
-    public VerifyCode verifyCode;
+    public VerifyCode OnVerifyCode;
     public delegate IEnumerator RegisterUser(string email, string password, string nickName, string emailVerificationId);
-    public RegisterUser registerUser;
+    public RegisterUser OnRegisterUser;
 
-    [SerializeField] private GameObject LoginGuide;
+    [FormerlySerializedAs("LoginGuide")]
+    [SerializeField] private GameObject _loginGuidePanel;
 
     private void Awake()
     {
-        checkNicknameAvailability = new CheckNicknameAvailability(CheckNicknameAvailabilityCoroutine);
-        sendVerificationCode = new SendVerificationCode(SendVerificationCodeCoroutine);
-        verifyCode = new VerifyCode(VerifyCodeCoroutine);
-        registerUser = new RegisterUser(RegisterUserCoroutine);
+        _legalCheck = GetComponent<LegalCheckScript>();
+        OnCheckNicknameAvailability = new CheckNicknameAvailability(CheckNicknameAvailabilityCoroutine);
+        OnSendVerificationCode = new SendVerificationCode(SendVerificationCodeCoroutine);
+        OnVerifyCode = new VerifyCode(VerifyCodeCoroutine);
+        OnRegisterUser = new RegisterUser(RegisterUserCoroutine);
     }
 
     private IEnumerator CheckNicknameAvailabilityCoroutine(string userName, Action<UserNameAvailabilityResponse> response)
     {
-        string url = $"{baseURL}{nicknameCheck}?username={userName}";
+        string url = $"{_baseUrl}{_nicknameAvailabilityPath}?username={userName}";
 
         using (UnityWebRequest request = new UnityWebRequest(url, "GET"))
         {
@@ -79,7 +94,7 @@ public class RegisterAndEmailVerifyCodeManager : MonoBehaviour
             }
             else
             {
-                nicknameAvailabilityText.text = "서버 오류(다시 요청해 주세요) " + request.error;
+                _nicknameAvailabilityText.text = "서버 오류(다시 요청해 주세요) " + request.error;
                 Debug.Log("서버 오류: " + request.responseCode + " / " + request.error);
                 Debug.Log("응답 내용: " + request.downloadHandler.text);
             }
@@ -89,7 +104,7 @@ public class RegisterAndEmailVerifyCodeManager : MonoBehaviour
 
     private IEnumerator SendVerificationCodeCoroutine(string userEmail, Action<EmailCodeResponse> response)
     {
-        string url = baseURL + sendEmailVerificationCodeURL;
+        string url = _baseUrl + _sendEmailVerificationCodePath;
         var requestBody = new SendEmailCodeRequest
         {
             Email = userEmail
@@ -109,7 +124,7 @@ public class RegisterAndEmailVerifyCodeManager : MonoBehaviour
 
             if (request.result == UnityWebRequest.Result.Success)
             {
-                sendOrNot.text = "코드 전송 성공!";
+                _emailCodeStatusText.text = "코드 전송 성공!";
                 response?.Invoke(JsonConvert.DeserializeObject<EmailCodeResponse>(request.downloadHandler.text));//받은 Json값을 EmailCodeResponse변환
 
 
@@ -117,7 +132,7 @@ public class RegisterAndEmailVerifyCodeManager : MonoBehaviour
             }
             else
             {
-                sendOrNot.text = "코드 전송 실패!";
+                _emailCodeStatusText.text = "코드 전송 실패!";
                 Debug.Log("서버 오류: " + request.responseCode + " / " + request.error);
                 Debug.Log("응답 내용: " + request.downloadHandler.text);
             }
@@ -126,7 +141,7 @@ public class RegisterAndEmailVerifyCodeManager : MonoBehaviour
 
     private IEnumerator VerifyCodeCoroutine(string code, string emailVerificationId, Action<VerifyEmailCodeResponse> response)
     {
-        string url = baseURL + verifyEmailCodeURL;
+        string url = _baseUrl + _verifyEmailCodePath;
         var requestBody = new VerifyEmailCodeRequest
         {
             EmailVerificationId = emailVerificationId,
@@ -135,7 +150,7 @@ public class RegisterAndEmailVerifyCodeManager : MonoBehaviour
 
         string json = JsonConvert.SerializeObject(requestBody);//보낼 값을 Json으로 변환
 
-        verifyCodeText.text = "인증 중...";
+        _verificationCodeStatusText.text = "인증 중...";
 
         using (UnityWebRequest request = new UnityWebRequest(url, "POST"))//HTTPMethod: Post로 url에 있는 URL경로로 요청을 보낸다
         {
@@ -149,7 +164,7 @@ public class RegisterAndEmailVerifyCodeManager : MonoBehaviour
 
             if (request.result == UnityWebRequest.Result.Success)
             {
-                verifyCodeText.text = "인증 성공!";
+                _verificationCodeStatusText.text = "인증 성공!";
                 response?.Invoke(JsonConvert.DeserializeObject<VerifyEmailCodeResponse>(request.downloadHandler.text));//보낼 값을 Json으로 변환
 
 
@@ -157,15 +172,15 @@ public class RegisterAndEmailVerifyCodeManager : MonoBehaviour
             }
             else
             {
-                if (emailCodeResponse != null &&
-                    emailCodeResponse.ExpiresAtUtc != default(DateTime) &&
-                    DateTime.UtcNow >= emailCodeResponse.ExpiresAtUtc.ToUniversalTime())
+                if (_emailCodeResponse != null &&
+                    _emailCodeResponse.ExpiresAtUtc != default(DateTime) &&
+                    DateTime.UtcNow >= _emailCodeResponse.ExpiresAtUtc.ToUniversalTime())
                 {
-                    verifyCodeText.text = "인증 시간이 초과되었습니다. 인증 코드를 다시 요청해주세요.";
+                    _verificationCodeStatusText.text = "인증 시간이 초과되었습니다. 인증 코드를 다시 요청해주세요.";
                 }
                 else
                 {
-                    verifyCodeText.text = "인증 실패!";
+                    _verificationCodeStatusText.text = "인증 실패!";
                 }
 
                 Debug.Log("서버 오류: " + request.responseCode + " / " + request.error);
@@ -176,7 +191,17 @@ public class RegisterAndEmailVerifyCodeManager : MonoBehaviour
 
     private IEnumerator RegisterUserCoroutine(string email, string password, string nickName, string emailVerificationId)
     {
-        string url = baseURL + registerURL;
+        if (_legalCheck == null || !_legalCheck.HasAcceptedAllTerms)
+        {
+            if (_emailCodeStatusText != null)
+            {
+                _emailCodeStatusText.text = "모든 약관에 동의해주세요.";
+            }
+
+            yield break;
+        }
+
+        string url = _baseUrl + _registerPath;
         var requestBody = new RegisterRequest
         {
             Email = email,
@@ -196,7 +221,7 @@ public class RegisterAndEmailVerifyCodeManager : MonoBehaviour
             {
                 Debug.Log("회원가입 성공!");
                 Debug.Log("응답 내용: " + request.downloadHandler.text);
-                LoginGuide.SetActive(true);
+                _loginGuidePanel.SetActive(true);
             }
             else
             {
