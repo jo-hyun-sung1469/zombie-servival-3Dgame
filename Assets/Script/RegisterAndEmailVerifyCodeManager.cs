@@ -6,7 +6,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Networking;
 
-[RequireComponent(typeof(LegalCheckScript))]
+
 public class RegisterAndEmailVerifyCodeManager : MonoBehaviour
 {
     [Header("URL 모음")]//나중에 URL주소를 바꿔야함
@@ -37,130 +37,37 @@ public class RegisterAndEmailVerifyCodeManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI sendOrNot;//코드가 보내졌는지 확인하는 text
     [SerializeField] private TextMeshProUGUI verifyCodeText;
 
+    [Header("GetterSetter 필드")]
+    public TMP_InputField NicknameText { get { return nicknameText; } }
+    public TextMeshProUGUI NicknameAvailabilityText { get { return nicknameAvailabilityText; } }
+    public TMP_InputField PasswordText { get { return passwordText; } }
+    public TextMeshProUGUI PasswordValidationText { get { return passwordValidationText; } }
+    public TMP_InputField EmailText { get { return emailText; } }
+    public TMP_InputField CodeText { get { return codeText; } }
+    public TextMeshProUGUI SendOrNot { get { return sendOrNot; } }
+    public TextMeshProUGUI VerifyCodeText { get { return verifyCodeText; } }
+    public EmailCodeResponse EmailCodeResponse { get { return emailCodeResponse; } }
+    public VerifyEmailCodeResponse VerifyEmailCodeResponse { get { return verifyEmailCodeResponse; } }
+
+
+    //delegate 필ㄷ
+    public delegate IEnumerator CheckNicknameAvailability(string userName, Action<UserNameAvailabilityResponse> response);
+    public CheckNicknameAvailability checkNicknameAvailability;
+    public delegate IEnumerator SendVerificationCode(string userEmail, Action<EmailCodeResponse> response);
+    public SendVerificationCode sendVerificationCode;
+    public delegate IEnumerator VerifyCode(string code, string emailVerificationId, Action<VerifyEmailCodeResponse> response);
+    public VerifyCode verifyCode;
+    public delegate IEnumerator RegisterUser(string email, string password, string nickName, string emailVerificationId);
+    public RegisterUser registerUser;
 
     [SerializeField] private GameObject LoginGuide;
 
     private void Awake()
     {
-        legalCheck = GetComponent<LegalCheckScript>();
-    }
-
-    public void OnCheckNicknameAvailability()
-    {
-        nickname = nicknameText.text;
-        if (!AuthInputRules.TryValidateUserName(nickname, out string error))
-        {
-            ShowFeedback(nicknameAvailabilityText, error);
-            return;
-        }
-
-        if (nicknameAvailabilityText != null)
-        {
-            nicknameAvailabilityText.text = string.Empty;
-        }
-
-        StartCoroutine(CheckNicknameAvailabilityCoroutine(nickname, (response) =>
-        {
-            ShowFeedback(nicknameAvailabilityText, response.IsAvailable
-                ? "사용 가능한 닉네임입니다."
-                : "이미 사용 중인 닉네임입니다.");
-        }));
-    }
-
-    public void OnRequestEmailVerificationCode()
-    {
-        if (legalCheck == null || !legalCheck.HasAcceptedAllTerms)
-        {
-            ShowFeedback(sendOrNot, "모든 약관에 동의해주세요.");
-            return;
-        }
-
-        email = emailText.text;
-        email.Trim();
-        if(!string.IsNullOrWhiteSpace(email))
-        {
-            StartCoroutine(SendVerificationCode(email, (response) =>
-            {
-                emailCodeResponse = response;
-            }));
-        }
-        else
-        {
-            Debug.Log("이메일란이 비어있습니다");
-            emailText.text = "이메일을 입력해주세요";
-        }
-    }
-
-    public void OnCheckVerificationCode()
-    {
-        insertCode = codeText.text;
-        if (!string.IsNullOrEmpty(insertCode))
-        {
-            StartCoroutine(VerifyCode(insertCode, emailCodeResponse.EmailVerificationId, (response) =>
-            {
-                verifyEmailCodeResponse = response;
-            }));
-        }
-        else
-        {
-            verifyCodeText.text = "인증 코드가 비어있습니다";
-            Debug.Log("인증코드가 비어있습니다");
-        }
-    }
-
-    public void OnRegister()
-    {
-        email = emailText.text;
-        password = passwordText.text;
-        nickname = nicknameText.text;
-        if (!AuthInputRules.TryValidateUserName(nickname, out string nicknameError))
-        {
-            ShowFeedback(nicknameAvailabilityText, nicknameError);
-            return;
-        }
-
-        if (!AuthInputRules.TryValidatePassword(password, out string passwordError))
-        {
-            ShowFeedback(passwordValidationText, passwordError);
-            return;
-        }
-
-        if (passwordValidationText != null)
-        {
-            passwordValidationText.text = string.Empty;
-        }
-
-        if (legalCheck == null || !legalCheck.HasAcceptedAllTerms)
-        {
-            ShowFeedback(sendOrNot, "모든 약관에 동의해주세요.");  
-            return;
-        }
-
-        if (!string.IsNullOrWhiteSpace(email))
-        {
-            if (verifyEmailCodeResponse == null ||
-                string.IsNullOrWhiteSpace(verifyEmailCodeResponse.EmailVerificationId))
-            {
-                ShowFeedback(sendOrNot, "이메일 인증을 먼저 완료해주세요.");
-                return;
-            }
-
-            StartCoroutine(RegisterUser(email, password, nickname, verifyEmailCodeResponse.EmailVerificationId));
-        }
-        else
-        {
-            Debug.Log("모든 필드를 입력해주세요.");
-        }
-    }
-
-    private static void ShowFeedback(TMP_Text feedbackText, string message)
-    {
-        if (feedbackText != null)
-        {
-            feedbackText.text = message;
-        }
-
-        Debug.Log(message);
+        checkNicknameAvailability = new CheckNicknameAvailability(CheckNicknameAvailabilityCoroutine);
+        sendVerificationCode = new SendVerificationCode(SendVerificationCodeCoroutine);
+        verifyCode = new VerifyCode(VerifyCodeCoroutine);
+        registerUser = new RegisterUser(RegisterUserCoroutine);
     }
 
     private IEnumerator CheckNicknameAvailabilityCoroutine(string userName, Action<UserNameAvailabilityResponse> response)
