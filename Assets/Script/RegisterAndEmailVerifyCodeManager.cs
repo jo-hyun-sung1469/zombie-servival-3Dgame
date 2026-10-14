@@ -16,13 +16,6 @@ public class RegisterAndEmailVerifyCodeManager : MonoBehaviour
     private string verifyEmailCodeURL = "/register/email-code/verify";
     private string registerURL = "/register";
 
-    [Header("private 필드")]
-    private string email = string.Empty;
-    private string password = string.Empty;
-    private string nickname = string.Empty;
-    private string insertCode = string.Empty;
-    private LegalCheckScript legalCheck;
-
     [Header("Response 필드")]
     [SerializeField] private EmailCodeResponse emailCodeResponse;
     [SerializeField] private VerifyEmailCodeResponse verifyEmailCodeResponse;
@@ -94,7 +87,7 @@ public class RegisterAndEmailVerifyCodeManager : MonoBehaviour
 
     }
 
-    private IEnumerator SendVerificationCode(string userEmail, Action<EmailCodeResponse> response)
+    private IEnumerator SendVerificationCodeCoroutine(string userEmail, Action<EmailCodeResponse> response)
     {
         string url = baseURL + sendEmailVerificationCodeURL;
         var requestBody = new SendEmailCodeRequest
@@ -131,7 +124,7 @@ public class RegisterAndEmailVerifyCodeManager : MonoBehaviour
         }
     }
 
-    private IEnumerator VerifyCode(string code, string emailVerificationId, Action<VerifyEmailCodeResponse> response)
+    private IEnumerator VerifyCodeCoroutine(string code, string emailVerificationId, Action<VerifyEmailCodeResponse> response)
     {
         string url = baseURL + verifyEmailCodeURL;
         var requestBody = new VerifyEmailCodeRequest
@@ -181,7 +174,7 @@ public class RegisterAndEmailVerifyCodeManager : MonoBehaviour
         }
     }
 
-    private IEnumerator RegisterUser(string email, string password, string nickName, string emailVerificationId)
+    private IEnumerator RegisterUserCoroutine(string email, string password, string nickName, string emailVerificationId)
     {
         string url = baseURL + registerURL;
         var requestBody = new RegisterRequest
