@@ -132,7 +132,10 @@ public class RegisterAndEmailVerifyCodeManager : MonoBehaviour
             }
             else
             {
-                _emailCodeStatusText.text = "코드 전송 실패!";
+                if (request.responseCode == 409)
+                    _emailCodeStatusText.text = "이미 가입된 이메일 입니다";
+                else
+                    _emailCodeStatusText.text = "서버 오류 (다시 요청해 주세요)";
                 Debug.Log("서버 오류: " + request.responseCode + " / " + request.error);
                 Debug.Log("응답 내용: " + request.downloadHandler.text);
             }
@@ -180,7 +183,7 @@ public class RegisterAndEmailVerifyCodeManager : MonoBehaviour
                 }
                 else
                 {
-                    _verificationCodeStatusText.text = "인증 실패!";
+                    _verificationCodeStatusText.text = "인증에 실패하셨습니다";
                 }
 
                 Debug.Log("서버 오류: " + request.responseCode + " / " + request.error);
