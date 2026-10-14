@@ -2,6 +2,11 @@
 
 Unity 기반 프로젝트. 아래 규칙을 항상 따른다.
 
+## 네이밍 컨벤션
+- 스크립트 작성, 에셋/폴더/씬/하이어라키 이름 지정, 기존 이름 리뷰·리네이밍 시 [CONVENTION.md](CONVENTION.md)를 읽고 따른다.
+- 기존에 문서화된 프로젝트 규칙과 충돌하면 기존 규칙을 우선하고, 충돌 지점만 사용자에게 알린다.
+- C# 구조·성능·라이프사이클 규칙은 `.agents/skills/unity-conventions`와 함께 적용한다.
+
 ## 스킬
 - C#(.cs) 작성/수정 시 `.agents/skills/unity-conventions` 규칙을 따른다.
 - 코드 리뷰 요청("리뷰해줘", "PR 검토") 시 `.agents/skills/unity-code-review`로 읽기 전용 리뷰를 수행한다.
