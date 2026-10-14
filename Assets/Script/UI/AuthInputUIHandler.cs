@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [RequireComponent(typeof(LegalCheckScript))]
 [RequireComponent(typeof(RegisterAndEmailVerifyCodeManager))]
@@ -15,6 +16,7 @@ public class AuthInputUIHandler : MonoBehaviour
 
     private RegisterAndEmailVerifyCodeManager _registerManager;
     private LoginManager _loginManager;
+    [SerializeField] private GameManager _gameManager;
 
     private void Awake()
     {
@@ -141,6 +143,24 @@ public class AuthInputUIHandler : MonoBehaviour
             Debug.Log("모든 필드를 입력해주세요.");
         }
     }
+
+    public void OnLogin()
+    {
+        string nickname = _loginManager.NicknameInputField.text.Trim();
+        string password = _loginManager.PasswordInputField.text.Trim();
+        if (string.IsNullOrWhiteSpace(_loginManager.NicknameInputField.text) || string.IsNullOrWhiteSpace(password))
+        {
+            _loginManager.ErrorText.text = "필수 항목을 전부 입력해주세요.";
+        }
+        else
+        {
+            StartCoroutine(_loginManager.OnLoginDelegate(nickname, password, response =>
+            {
+                _gameManager.LoginResponse = response;
+            }));
+        }
+    }
+
     private static void ShowFeedback(TMP_Text feedbackText, string message)
     {
         if (feedbackText != null)

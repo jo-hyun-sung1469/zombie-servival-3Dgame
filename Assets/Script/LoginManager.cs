@@ -17,25 +17,14 @@ public class LoginManager : MonoBehaviour
     [SerializeField] private TMP_InputField _passwordInputField;
     [FormerlySerializedAs("errorText")]
     [SerializeField] private TextMeshProUGUI _errorText;
-    [FormerlySerializedAs("gameManager")]
-    [SerializeField] private GameManager _gameManager;
 
-    public void onLogin()
-    {
-        string nickname = _nicknameInputField.text.Trim();
-        string password = _passwordInputField.text.Trim();
-        if (string.IsNullOrWhiteSpace(_nicknameInputField.text) || string.IsNullOrWhiteSpace(password))
-        {
-            _errorText.text = "필수 항목을 전부 입력해주세요.";
-        }
-        else
-        {
-            StartCoroutine(Login(nickname, password, response =>
-            {
-               _gameManager.LoginResponse = response;
-            }));
-        }
-    }
+    public TMP_InputField NicknameInputField { get { return _nicknameInputField; } }
+    public TMP_InputField PasswordInputField { get { return _passwordInputField; } }
+    public TextMeshProUGUI ErrorText { get; private set; }
+
+    public delegate IEnumerator LoginDelegate(string username, string password, Action<LoginResponse> response);
+    public LoginDelegate OnLoginDelegate;
+
 
     private IEnumerator Login(string nickname, string password, Action<LoginResponse> response)
     {
