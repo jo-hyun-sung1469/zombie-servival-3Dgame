@@ -45,6 +45,17 @@ public class RegisterAndEmailVerifyCodeManager : MonoBehaviour
         legalCheck = GetComponent<LegalCheckScript>();
     }
 
+    private void Update()
+    {
+        if (passwordText.isFocused)
+        {
+            Input.imeCompositionMode = IMECompositionMode.Off;
+            Debug.Log("IME 꺼짐");
+        }
+        else
+            Input.imeCompositionMode = IMECompositionMode.On;
+    }
+
     public void CheckNicknameAvailability()
     {
         nickname = nicknameText.text;
