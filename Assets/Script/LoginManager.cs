@@ -15,6 +15,14 @@ public class LoginManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI errorText;
     [SerializeField] private GameManager gameManager;
 
+    private void Update()
+    {
+        if (passwordInputField.isFocused)
+            Input.imeCompositionMode = IMECompositionMode.Off;
+        else
+            Input.imeCompositionMode = IMECompositionMode.On;
+    }
+
     public void onLogin()
     {
         string nickname = nicknameInputField.text.Trim();
