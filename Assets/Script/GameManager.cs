@@ -3,11 +3,11 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-    private LoginResponse loginResponse;//LoginResponse에 있는 AssessToken을 저장&사용하기 위한 변수
+    private LoginResponse _loginResponse;//LoginResponse에 있는 AssessToken을 저장&사용하기 위한 변수
     public LoginResponse LoginResponse
     {
-        get { return loginResponse; }
-        set { loginResponse = value; }
+        get { return _loginResponse; }
+        set { _loginResponse = value; }
     }
 
     private GameManager _instance;

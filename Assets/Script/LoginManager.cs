@@ -4,37 +4,36 @@ using System.Collections;
 using System.Text;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 
 public class LoginManager : MonoBehaviour
 {
-    private string loginURL= "https://localhost:7037/api/auth/login";
-    [SerializeField] private TMP_InputField nicknameInputField;
-    [SerializeField] private TMP_InputField passwordInputField;
-    [SerializeField] private TextMeshProUGUI errorText;
-    [SerializeField] private GameManager gameManager;
+    private string _loginUrl= "https://zombie-survival-3d-game.duckdns.org/api/auth/login";
+    [FormerlySerializedAs("nicknameInputField")]
+    [SerializeField] private TMP_InputField _nicknameInputField;
+    [FormerlySerializedAs("passwordInputField")]
+    [SerializeField] private TMP_InputField _passwordInputField;
+    [FormerlySerializedAs("errorText")]
+    [SerializeField] private TextMeshProUGUI _errorText;
 
-    public void onLogin()
+    public TMP_InputField NicknameInputField { get { return _nicknameInputField; } }
+    public TMP_InputField PasswordInputField { get { return _passwordInputField; } }
+    public TextMeshProUGUI ErrorText { get; private set; }
+
+    public delegate IEnumerator LoginDelegate(string username, string password, Action<LoginResponse> response);
+    public LoginDelegate OnLoginDelegate;
+
+    private void Awake()
     {
-        string nickname = nicknameInputField.text.Trim();
-        string password = passwordInputField.text.Trim();
-        if (string.IsNullOrWhiteSpace(nicknameInputField.text) || string.IsNullOrWhiteSpace(password))
-        {
-            errorText.text = "필수 항목을 전부 입력해주세요.";
-        }
-        else
-        {
-            StartCoroutine(Login(nickname, password, response =>
-            {
-               gameManager.LoginResponse = response;
-            }));
-        }
+        OnLoginDelegate = new LoginDelegate(Login);
     }
+
 
     private IEnumerator Login(string nickname, string password, Action<LoginResponse> response)
     {
-        string url = loginURL;
+        string url = _loginUrl;
         var requestBody = new LoginRequest
         {
             UserName = nickname,
@@ -61,8 +60,11 @@ public class LoginManager : MonoBehaviour
                 SceneManager.LoadScene("MainScene");
             }
             else
-            {
-                errorText.text = "로그인 실패!";
+            {   if(request.responseCode == 401)
+                    _errorText.text = "닉네임 및 비밀번호가 틀렸습니다";
+                else
+                    _errorText.text = "서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.";
+
                 Debug.Log("서버 오류: " + request.responseCode + " / " + request.error);
             }
         }
