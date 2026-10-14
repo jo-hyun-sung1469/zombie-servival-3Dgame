@@ -45,17 +45,6 @@ public class RegisterAndEmailVerifyCodeManager : MonoBehaviour
         legalCheck = GetComponent<LegalCheckScript>();
     }
 
-    private void Update()
-    {
-        if (passwordText.isFocused)
-        {
-            Input.imeCompositionMode = IMECompositionMode.Off;
-            Debug.Log("IME 꺼짐");
-        }
-        else
-            Input.imeCompositionMode = IMECompositionMode.On;
-    }
-
     public void CheckNicknameAvailability()
     {
         nickname = nicknameText.text;
@@ -139,6 +128,12 @@ public class RegisterAndEmailVerifyCodeManager : MonoBehaviour
         if (passwordValidationText != null)
         {
             passwordValidationText.text = string.Empty;
+        }
+
+        if (legalCheck == null || !legalCheck.HasAcceptedAllTerms)
+        {
+            ShowFeedback(sendOrNot, "모든 약관에 동의해주세요.");  
+            return;
         }
 
         if (!string.IsNullOrWhiteSpace(email))
