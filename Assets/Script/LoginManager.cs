@@ -25,6 +25,11 @@ public class LoginManager : MonoBehaviour
     public delegate IEnumerator LoginDelegate(string username, string password, Action<LoginResponse> response);
     public LoginDelegate OnLoginDelegate;
 
+    private void Awake()
+    {
+        OnLoginDelegate = new LoginDelegate(Login);
+    }
+
 
     private IEnumerator Login(string nickname, string password, Action<LoginResponse> response)
     {
