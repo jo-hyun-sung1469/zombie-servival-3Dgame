@@ -45,7 +45,7 @@ public class RegisterAndEmailVerifyCodeManager : MonoBehaviour
         legalCheck = GetComponent<LegalCheckScript>();
     }
 
-    public void CheckNicknameAvailability()
+    public void OnCheckNicknameAvailability()
     {
         nickname = nicknameText.text;
         if (!AuthInputRules.TryValidateUserName(nickname, out string error))
